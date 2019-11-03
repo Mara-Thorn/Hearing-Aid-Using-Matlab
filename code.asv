@@ -55,4 +55,4 @@ for i=1:size(mag)
     out(i)=mag(i)*exp(j*phse(i));
     
 end
-outfinal=ifft(out);
+outfinal=ifft()
