@@ -58,16 +58,11 @@ k = 0;
 while (k<=freqP(1)*N/fs)
    gain(k+1) = firstC*k/(N*T) + 1; %paper step 1
     gain(N-k) = gain(k+1);
-    k=k+1;
 end
 % for second stage
 secondC = firstC*freqP(1)+1;
 secondC2 = (freqP(2)-freqP(1))/5;
-while (K<= freqP(2)*N/fs)
-    gain(k+1) = ((secondC-1)*exp(-((k/(N*T))-freqP(1))/secondC2)) + 1;
-    gain(N-k) = gain(k+1)
-    k=k+1;
-end
+while (K<= freq())
 %% amplitude shaper
 out1=fft(out);
 phse=angle(out1);
