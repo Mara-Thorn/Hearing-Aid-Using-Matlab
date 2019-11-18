@@ -11,9 +11,13 @@ close all
 % pause(7);
 %%
 % y = getaudiodata(recObj);
-input = 'audio.wav';
-[in,fs] = audioread(input);
-[y,fs] = audioread(input);
+% input= 'Counting-16-44p1-mono-15secs.wav';
+
+% input = 'audio.wav';
+% [in,fs] = audioread(input);
+% [y,fs] = audioread(input);
+load handel.mat
+fs=Fs;
 y = y(:, 1);
 %info = audioinfo(input);
 figure,plot(y);
@@ -24,15 +28,17 @@ figure,plot(y);
 title('awgn');
 disp('playing added noise...');
 sound(y);
-pause(7)
+pause(10)
 %%
 % yd = wdenoise(y,3,'Wavelet','db3','DenoisingMethod','UniversalThreshold','ThresholdRule','Soft','NoiseEstimate','LevelDependent');
 disp('playing denoised sound...');
 [thr,sorh,keepapp]=ddencmp( 'den' , 'wv' ,y);  
 yd=wdencmp( 'gbl' ,y, 'db3' ,2,thr,sorh,keepapp);  
 sound(yd);
+
 figure,plot(yd);
 title('denoise');
+pause(10)
 %% Best till now
 %'Fp,Fst,Ap,Ast' (passband frequency, stopband frequency, passband ripple, stopband attenuation)
 hlpf = fdesign.lowpass('Fp,Fst,Ap,Ast',3.0e3,3.5e3,0.5,50,fs);
@@ -42,7 +48,7 @@ disp('playing denoised sound');
 sound(x,fs);
 figure,plot(x);
 title('denoise');
-
+pause(10)
 %% freq shaper
 g = 45;
 freqP = [1000, 1500, 2550, 5000];
@@ -117,16 +123,20 @@ title('Adjusted Signal');
 
 %%
 sound(y,fs);
-
+pause(10);
 %% amplitude shaper
-out1=fft(out);
+out1=fft(y);
 phse=angle(out1);
 mag=abs(out1)/N;
-threshold=100
-for i=1:size(mag)
-    if(mag((i)>threshold)
-        mag(i)=threshold
+[magsig,~]=size(mag);
+threshold=100;
+out=zeros(magsig,1);
+for i=1:magsig/2
+    if(mag(i)>threshold)
+        mag(i)=threshold;mag(magsig-i)=threshold;
     end
     out(i)=mag(i)*exp(j*phse(i));
+    out(magsig-i)=out(i);
 end
-outfinal=ifft(out);
+outfinal=real(ifft(out));
+sound(outfinal,fs);
