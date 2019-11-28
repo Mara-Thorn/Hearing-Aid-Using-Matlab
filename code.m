@@ -127,6 +127,7 @@ title('Adjusted Signal');
 sound(y,fs);
 pause(10);
 %% amplitude shaper
+disp('yo')
 out1=fft(y);
 phse=angle(out1);
 mag=abs(out1)/N;
@@ -140,5 +141,6 @@ for i=1:magsig/2
     out(i)=mag(i)*exp(j*phse(i));
     out(magsig-i)=out(i);
 end
-outfinal=real(ifft(out));
+outfinal=real(ifft(out))*2000;
 sound(outfinal,fs);
+pause(10);disp('yoyo')
