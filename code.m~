@@ -32,6 +32,16 @@ disp('playing added noise...');
 % sound(y);
 % pause(15)
 %%
+% % yd = wdenoise(y,3,'Wavelet','db3','DenoisingMethod','UniversalThreshold','ThresholdRule','Soft','NoiseEstimate','LevelDependent');
+% disp('playing denoised sound...');
+% [thr,sorh,keepapp]=ddencmp( 'den' , 'wv' ,y);  
+% [yd,~,~,~,~]=wdencmp( 'gbl' ,y, 'db3' ,2,thr,sorh,keepapp);  
+% sound(yd);
+% 
+% figure,plot(yd);
+% title('denoise');
+% pause(10)
+%% Best till now
 %'Fp,Fst,Ap,Ast' (passband frequency, stopband frequency, passband ripple, stopband attenuation)
 hlpf = fdesign.lowpass('Fp,Fst,Ap,Ast',3.0e3,3.5e3,0.5,50,fs);
 D = design(hlpf);
@@ -132,20 +142,20 @@ for i=1:magsig/2
     out(magsig-i)=out(i);
 end
 %%
-outfinal=real(ifft(out))*5000;
+outfinal=real(ifft(out))*50000;
 sound(outfinal,fs);
 pause(15);
 disp('yoyo')
 
 %%
-load handel.mat
+
 
 figure;
 subplot(2,1,1);
-specgram(y);
+specgram(x);
 title('Spectrogram of Original Signal 2');
 
 subplot(2,1,2);
-specgram(outfinal);
+specgram(y);
 title('Spectrogram of Adjusted Signal 2');
 
