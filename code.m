@@ -26,6 +26,7 @@ figure,plot(y);
 title('input');
 %%
 y = awgn(y,40);
+noi = y;
 figure,plot(y);
 title('awgn');
 disp('playing added noise...');
@@ -142,7 +143,7 @@ load handel.mat
 
 figure;
 subplot(2,1,1);
-specgram(y);
+specgram(noi);
 title('Spectrogram of Original Signal 2');
 
 subplot(2,1,2);
